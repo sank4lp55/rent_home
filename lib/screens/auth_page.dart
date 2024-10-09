@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rent_home/screens/home.dart';
 
-class LoginSignupPage extends StatefulWidget {
-  const LoginSignupPage({super.key});
+class AuthPage extends StatefulWidget {
+  const AuthPage({super.key});
 
   @override
-  _LoginSignupPageState createState() => _LoginSignupPageState();
+  _AuthPageState createState() => _AuthPageState();
 }
 
-class _LoginSignupPageState extends State<LoginSignupPage> {
+class _AuthPageState extends State<AuthPage> {
   bool isLogin = true; // Toggle between login and signup
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -209,6 +210,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             // Handle login or signup logic
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        HomePage()));
                           }
                         },
                         style: ElevatedButton.styleFrom(

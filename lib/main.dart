@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xff35573B),
+          seedColor: const Color(0xffBF5973),
         ),
         useMaterial3: true,
         textTheme: GoogleFonts.latoTextTheme(),
-        primaryColor: const Color(0xff35573B),
+        primaryColor: const Color(0xffC14464),
       ),
       home: const OnboardingPage(),
     );

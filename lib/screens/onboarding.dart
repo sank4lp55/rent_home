@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'login_page.dart';
+import 'auth_page.dart';
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
 
@@ -71,7 +71,7 @@ class OnboardingPage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginSignupPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const AuthPage()));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: theme.primaryColor,

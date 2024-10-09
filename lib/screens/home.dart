@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                                 size: 18,
                               ),
                               Text(
-                                "24, Mikel Johnson, US",
+                                "Sector 75, Golf City, ND",
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
                                 ),
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                                 end: Alignment.bottomLeft,
                                 stops: [0.4, 1],
                                 colors: [
-                                  Color(0xff35573b),
+                                  Color(0xffC14464),
                                   Colors.grey,
                                 ],
                               ),
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Image.asset(
                                 "assets/house.png",
-                                width: 130,
+                                width: 110,
                                 fit: BoxFit.cover,
                               ),
                               const SizedBox(
@@ -249,9 +249,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         const Positioned(
-          bottom: 50,
-          left: 80,
-          right: 80,
+          bottom: 30,
+          left: 30,
+          right: 30,
           child: HomeBottomNavBar(),
         )
       ],
