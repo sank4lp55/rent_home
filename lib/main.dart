@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rent_home/screens/homescreen.dart';
+import 'package:rent_home/screens/map_screen.dart';
 import 'package:rent_home/screens/onboarding.dart';
 
 void main() {
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.latoTextTheme(),
         primaryColor: const Color(0xffC14464),
       ),
-      home: const OnboardingPage(),
+      home:  Homescreen(),
     );
   }
 }
