@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rent_home/screens/homescreen.dart';
 import 'package:rent_home/screens/profile_screen.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class BottomNav extends StatefulWidget {
+  const BottomNav({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<BottomNav> createState() => _BottomNavState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BottomNavState extends State<BottomNav> {
   final PageController pageController = PageController(initialPage: 0);
   bool isHomeActive = true;
   bool isMessageActive = false;

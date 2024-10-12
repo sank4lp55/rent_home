@@ -217,7 +217,7 @@ class _AuthPageState extends State<AuthPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        MyHomePage()));
+                                        BottomNav()));
                           }
                         },
                         style: ElevatedButton.styleFrom(

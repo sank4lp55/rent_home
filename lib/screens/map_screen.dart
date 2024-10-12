@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rent_home/widgets/search_area_button.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MapScreen extends StatefulWidget {
@@ -83,9 +84,12 @@ class _MapScreenState extends State<MapScreen> {
       {
         "name": "The Grand Palace Hotel",
         "price": "₹3000",
-        "lat": (currentPosition?.latitude ?? 37.42796133580664) + _generateOffset(),
-        "lng": (currentPosition?.longitude ?? -122.085749655962) + _generateOffset(),
-        "description": "A luxurious hotel featuring spacious rooms and breathtaking views of the city skyline.",
+        "lat": (currentPosition?.latitude ?? 37.42796133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.085749655962) +
+            _generateOffset(),
+        "description":
+            "A luxurious hotel featuring spacious rooms and breathtaking views of the city skyline.",
         "rating": "5",
         "imageUrls": [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
@@ -96,9 +100,12 @@ class _MapScreenState extends State<MapScreen> {
       {
         "name": "Ocean Breeze Resort",
         "price": "₹4500",
-        "lat": (currentPosition?.latitude ?? 37.43096133580664) + _generateOffset(),
-        "lng": (currentPosition?.longitude ?? -122.088749655962) + _generateOffset(),
-        "description": "An oceanfront resort with private beach access and premium spa services for ultimate relaxation.",
+        "lat": (currentPosition?.latitude ?? 37.43096133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.088749655962) +
+            _generateOffset(),
+        "description":
+            "An oceanfront resort with private beach access and premium spa services for ultimate relaxation.",
         "rating": "4",
         "imageUrls": [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
@@ -109,9 +116,12 @@ class _MapScreenState extends State<MapScreen> {
       {
         "name": "Mountain View Inn",
         "price": "₹2200",
-        "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
-        "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
-        "description": "A quaint inn nestled in the mountains, perfect for hikers and nature lovers.",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "A quaint inn nestled in the mountains, perfect for hikers and nature lovers.",
         "rating": "3",
         "imageUrls": [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
@@ -122,9 +132,12 @@ class _MapScreenState extends State<MapScreen> {
       {
         "name": "City Center Suites",
         "price": "₹3800",
-        "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
-        "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
-        "description": "Modern suites located in the heart of the city, close to major attractions.",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "Modern suites located in the heart of the city, close to major attractions.",
         "rating": "4",
         "imageUrls": [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
@@ -135,9 +148,12 @@ class _MapScreenState extends State<MapScreen> {
       {
         "name": "Cottage Retreat",
         "price": "₹2900",
-        "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
-        "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
-        "description": "Charming cottage with a rustic feel, ideal for a quiet getaway.",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "Charming cottage with a rustic feel, ideal for a quiet getaway.",
         "rating": "3",
         "imageUrls": [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
@@ -148,9 +164,12 @@ class _MapScreenState extends State<MapScreen> {
       {
         "name": "Eco Lodge",
         "price": "₹2100",
-        "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
-        "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
-        "description": "Sustainable lodge surrounded by nature, offering eco-friendly accommodations.",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "Sustainable lodge surrounded by nature, offering eco-friendly accommodations.",
         "rating": "4",
         "imageUrls": [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
@@ -160,7 +179,6 @@ class _MapScreenState extends State<MapScreen> {
       },
     ];
   }
-
 
   Future<void> _addHotelMarkers() async {
     for (var hotel in hotels ?? []) {
@@ -232,12 +250,14 @@ class _MapScreenState extends State<MapScreen> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start, // Align all contents to the left
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // Align all contents to the left
               children: [
                 // Carousel Slider for Images
                 Container(
@@ -259,8 +279,11 @@ class _MapScreenState extends State<MapScreen> {
                             imageUrl: url,
                             fit: BoxFit.cover,
                             width: double.infinity,
-                            placeholder: (context, url) => _buildShimmerEffect(), // Placeholder while loading
-                            errorWidget: (context, url, error) => Icon(Icons.error), // Error widget if the image fails to load
+                            placeholder: (context, url) =>
+                                _buildShimmerEffect(),
+                            // Placeholder while loading
+                            errorWidget: (context, url, error) => Icon(Icons
+                                .error), // Error widget if the image fails to load
                           ),
                         ),
                       );
@@ -271,7 +294,8 @@ class _MapScreenState extends State<MapScreen> {
 
                 // Hotel Name and Rating
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribute space between name and rating
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Distribute space between name and rating
                   children: [
                     Expanded(
                       child: Text(
@@ -306,7 +330,8 @@ class _MapScreenState extends State<MapScreen> {
                 // Hotel Price
                 Text(
                   "Price: $price",
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.left, // Left-align the price
                 ),
                 const SizedBox(height: 10),
@@ -334,7 +359,8 @@ class _MapScreenState extends State<MapScreen> {
                             color: Colors.grey.withOpacity(0.4)),
                         child: const Center(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center, // Align icons and text to the left
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // Align icons and text to the left
                             children: [
                               Icon(
                                 Icons.people_alt_outlined,
@@ -357,7 +383,8 @@ class _MapScreenState extends State<MapScreen> {
                             color: Colors.grey.withOpacity(0.4)),
                         child: const Center(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center, // Align icons and text to the left
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // Align icons and text to the left
                             children: [
                               Icon(
                                 Icons.calendar_month_outlined,
@@ -389,7 +416,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -411,32 +437,7 @@ class _MapScreenState extends State<MapScreen> {
           Stack(
             alignment: Alignment.center,
             children: [
-              Positioned(
-                top: 20,
-                child: Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: Center(
-                        child: Text(
-                          "Search this area",
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              Positioned(top: 20, child: SearchButton()),
             ],
           ),
         ],
@@ -457,5 +458,4 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
   }
-
 }
