@@ -113,7 +113,7 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Reduced padding
-                          child: Text('Landlord'),
+                          child: Text('Host'),
                         ),
                       ],
                     ),

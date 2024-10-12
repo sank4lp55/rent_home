@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui; // For custom marker rendering
+import 'dart:ui';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,17 +31,15 @@ class _MapScreenState extends State<MapScreen> {
   List<Map<String, dynamic>>? hotels;
 
   @override
-  @override
   void initState() {
     super.initState();
-    getIcon();
     _initializeMap();
   }
 
   Future<void> _initializeMap() async {
     await _getCurrentLocation();
     setHotelCoordinates();
-    _addHotelMarkers();
+    await _addHotelMarkers(); // await to ensure marker generation
   }
 
   Future<void> _getCurrentLocation() async {
@@ -65,105 +66,325 @@ class _MapScreenState extends State<MapScreen> {
       CameraPosition(target: currentPosition!, zoom: 16),
     ));
 
-    // markers['current_location'] = Marker(
-    //   markerId: const MarkerId('current_location'),
-    //   position: currentPosition!,
-    //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-    //   infoWindow: const InfoWindow(title: "Your Location"),
-    // );
-    print(markers);
     setState(() {});
   }
-
-
-
 
   void setHotelCoordinates() {
     final Random random = Random();
 
     // Helper function to generate a small random offset
     double _generateOffset() {
-      return (random.nextDouble() - 0.5) * 0.005;  // Small offset between -0.0005 and 0.0005
+      return (random.nextDouble() - 0.5) * 0.005;
     }
 
     hotels = [
       {
-        "name": "Hotel 1",
-        "price": "\$150",
+        "name": "The Grand Palace Hotel",
+        "price": "₹3000",
         "lat": (currentPosition?.latitude ?? 37.42796133580664) + _generateOffset(),
         "lng": (currentPosition?.longitude ?? -122.085749655962) + _generateOffset(),
+        "description": "A luxurious hotel featuring spacious rooms and breathtaking views of the city skyline.",
+        "rating": "5",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
       },
       {
-        "name": "Hotel 2",
-        "price": "\$200",
+        "name": "Ocean Breeze Resort",
+        "price": "₹4500",
         "lat": (currentPosition?.latitude ?? 37.43096133580664) + _generateOffset(),
         "lng": (currentPosition?.longitude ?? -122.088749655962) + _generateOffset(),
+        "description": "An oceanfront resort with private beach access and premium spa services for ultimate relaxation.",
+        "rating": "4",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
       },
       {
-        "name": "Hotel 3",
-        "price": "\$180",
+        "name": "Mountain View Inn",
+        "price": "₹2200",
         "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
         "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
+        "description": "A quaint inn nestled in the mountains, perfect for hikers and nature lovers.",
+        "rating": "3",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
       },
       {
-        "name": "Hotel 4",
-        "price": "\$180",
+        "name": "City Center Suites",
+        "price": "₹3800",
         "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
         "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
+        "description": "Modern suites located in the heart of the city, close to major attractions.",
+        "rating": "4",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
       },
       {
-        "name": "Hotel 5",
-        "price": "\$180",
+        "name": "Cottage Retreat",
+        "price": "₹2900",
         "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
         "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
+        "description": "Charming cottage with a rustic feel, ideal for a quiet getaway.",
+        "rating": "3",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
       },
       {
-        "name": "Hotel 6",
-        "price": "\$180",
+        "name": "Eco Lodge",
+        "price": "₹2100",
         "lat": (currentPosition?.latitude ?? 37.42496133580664) + _generateOffset(),
         "lng": (currentPosition?.longitude ?? -122.084749655962) + _generateOffset(),
+        "description": "Sustainable lodge surrounded by nature, offering eco-friendly accommodations.",
+        "rating": "4",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
       },
     ];
   }
-  void _addHotelMarkers() {
+
+
+  Future<void> _addHotelMarkers() async {
     for (var hotel in hotels ?? []) {
+      final markerIcon = await _createCustomMarkerWithPrice(hotel['price']);
       markers[hotel['name']] = Marker(
         markerId: MarkerId(hotel['name']),
         position: LatLng(hotel['lat'], hotel['lng']),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-        infoWindow: InfoWindow(
-          title: hotel['name'],
-          snippet: hotel['price'], // Display the price of the hotel
-          onTap: () {
-            _showHotelDetails(hotel['name'], hotel['price']);
-          },
-        ),
+        icon: markerIcon,
+        onTap: () {
+          // Directly show the dialog when the marker is tapped
+          _showHotelDetails(
+            hotel['name'],
+            hotel['price'],
+            hotel['imageUrls'],
+            hotel['description'],
+            hotel['rating'],
+          );
+        },
       );
     }
-    print(markers);
     setState(() {});
   }
 
-  // Function to display hotel details in a pop-up
-  void _showHotelDetails(String name, String price) {
+  Future<BitmapDescriptor> _createCustomMarkerWithPrice(String price) async {
+    final PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    const double size = 140.0;
+
+    // Draw a rectangle with rounded corners and fill with a color
+    final Paint paint = Paint()..color = Theme.of(context).primaryColor;
+    final RRect rRect = RRect.fromRectAndRadius(
+      const Rect.fromLTWH(0.0, 0.0, size, size / 2), // Define the rectangle
+      const Radius.circular(size / 4), // Apply the border radius here
+    );
+    canvas.drawRRect(rRect, paint);
+
+    // Draw the price text
+    final TextPainter textPainter = TextPainter(
+      textDirection: ui.TextDirection.ltr,
+    );
+    textPainter.text = TextSpan(
+      text: price,
+      style: const TextStyle(
+        fontSize: 35.0,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(
+        canvas,
+        Offset(
+          (size - textPainter.width) / 2, // center the text horizontally
+          (size / 4 - textPainter.height / 2), // center the text vertically
+        ));
+
+    final img = await pictureRecorder
+        .endRecording()
+        .toImage(size.toInt(), (size / 2).toInt());
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+  }
+
+  //hotel dialog
+  void _showHotelDetails(String name, String price, List<String> imageUrls,
+      String description, String rating) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(name),
-          content: Text("Price: $price"),
-          actions: [
-            TextButton(
-              child: const Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start, // Align all contents to the left
+              children: [
+                // Carousel Slider for Images
+                Container(
+                  // height: 200, // Adjust the height as necessary
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 170.0,
+                      enlargeCenterPage: false,
+                      enableInfiniteScroll: true,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 5),
+                    ),
+                    items: imageUrls.map((url) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Image.network(
+                            url,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Hotel Name and Rating
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribute space between name and rating
+                  children: [
+                    Expanded(
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                        textAlign: TextAlign.left, // Left-align the hotel name
+                      ),
+                    ),
+                    // Show star and numeric rating
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 20, // Adjust star size if necessary
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          rating,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+
+                // Hotel Price
+                Text(
+                  "Price: $price",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.left, // Left-align the price
+                ),
+                const SizedBox(height: 10),
+
+                // Hotel Description
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black54,
+                  ),
+                  textAlign: TextAlign.left, // Left-align the description
+                ),
+                const SizedBox(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 50,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey.withOpacity(0.4)),
+                        child: const Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center, // Align icons and text to the left
+                            children: [
+                              Icon(
+                                Icons.people_alt_outlined,
+                                size: 15,
+                              ),
+                              SizedBox(width: 5),
+                              Text("IN/2G")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Container(
+                        height: 50,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey.withOpacity(0.4)),
+                        child: const Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center, // Align icons and text to the left
+                            children: [
+                              Icon(
+                                Icons.calendar_month_outlined,
+                                size: 15,
+                              ),
+                              SizedBox(width: 5),
+                              Text("Oct 12 - 13")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -217,12 +438,5 @@ class _MapScreenState extends State<MapScreen> {
         ],
       ),
     );
-  }
-
-  getIcon() async {
-    icon = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(devicePixelRatio: 3.2), "assets/car.png");
-
-    setState(() {});
   }
 }
