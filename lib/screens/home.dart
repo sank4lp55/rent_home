@@ -248,12 +248,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        const Positioned(
-          bottom: 30,
-          left: 30,
-          right: 30,
-          child: HomeBottomNavBar(),
-        )
+        // const Positioned(
+        //   bottom: 30,
+        //   left: 30,
+        //   right: 30,
+        //   child: HomeBottomNavBar(),
+        // )
       ],
     );
   }

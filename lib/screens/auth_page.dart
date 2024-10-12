@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/home.dart';
+import 'package:rent_home/screens/homescreen.dart';
+
+import '../widgets/bottom_nav.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -214,7 +217,7 @@ class _AuthPageState extends State<AuthPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        HomePage()));
+                                        MyHomePage()));
                           }
                         },
                         style: ElevatedButton.styleFrom(

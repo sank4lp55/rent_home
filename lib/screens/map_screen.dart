@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui; // For custom marker rendering
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -253,10 +255,12 @@ class _MapScreenState extends State<MapScreen> {
                         borderRadius: BorderRadius.circular(10),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Image.network(
-                            url,
+                          child: CachedNetworkImage(
+                            imageUrl: url,
                             fit: BoxFit.cover,
                             width: double.infinity,
+                            placeholder: (context, url) => _buildShimmerEffect(), // Placeholder while loading
+                            errorWidget: (context, url, error) => Icon(Icons.error), // Error widget if the image fails to load
                           ),
                         ),
                       );
@@ -439,4 +443,19 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
   }
+
+  // Shimmer Effect Widget
+  Widget _buildShimmerEffect() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
 }

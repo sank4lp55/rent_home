@@ -40,6 +40,8 @@ dependencies:
   geolocator: ^13.0.1
   fbroadcast: ^2.0.0
   carousel_slider: ^5.0.0
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

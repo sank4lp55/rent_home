@@ -13,6 +13,7 @@ class _HomescreenState extends State<Homescreen> {
   // Track selected role: 0 for Renter, 1 for Landlord
   int _selectedRoleIndex = 0;
 
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -126,12 +127,12 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ),
         ),
-        const Positioned(
-          bottom: 30,
-          left: 30,
-          right: 30,
-          child: HomeBottomNavBar(),
-        ),
+        // const Positioned(
+        //   bottom: 30,
+        //   left: 30,
+        //   right: 30,
+        //   child: HomeBottomNavBar(),
+        // ),
       ],
     );
   }
