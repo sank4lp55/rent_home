@@ -81,10 +81,10 @@ class NavBarItem extends StatelessWidget {
             radius: 25,
             backgroundColor: isActive
                 ? Theme.of(context).primaryColor
-                : const Color(0xff5d5d61),
+                : Colors.grey,
             child: Icon(
               icon,
-              color: isActive ? Colors.white : Colors.grey,
+              color: isActive ? Colors.white : Colors.white70,
             ),
           ),
         ],
