@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rent_home/screens/home.dart';
-import 'package:rent_home/screens/homescreen.dart';
+import 'package:rent_home/screens/basic_info_screen.dart';
 import 'package:rent_home/widgets/option_button.dart';
 
 import '../widgets/bottom_nav.dart';
@@ -13,7 +12,7 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  bool isLogin = true; // Toggle between login and signup
+  bool isLogin = true;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -220,7 +219,7 @@ class _AuthPageState extends State<AuthPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        BottomNav()));
+                                        InfoScreen()));
                           }
                         },
                         style: ElevatedButton.styleFrom(
