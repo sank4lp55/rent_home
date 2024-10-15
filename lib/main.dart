@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.latoTextTheme(),
         primaryColor: const Color(0xffC14464),
       ),
-      home:  BottomNav(),
+      home:  OnboardingPage(),
     );
   }
 }

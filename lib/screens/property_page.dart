@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PropertyPage extends StatelessWidget {
@@ -17,9 +18,15 @@ class PropertyPage extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset(
-                    image,
+                  CachedNetworkImage(
+                    imageUrl: image,
                     fit: BoxFit.cover,
+                    width: double.infinity,
+                    placeholder: (context, url) =>
+                       CircularProgressIndicator(),
+                    // Placeholder while loading
+                    errorWidget: (context, url, error) => Icon(Icons
+                        .error), // Error widget if the image fails to load
                   ),
                   Positioned(
                     bottom: 20,

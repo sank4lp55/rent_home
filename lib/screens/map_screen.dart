@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rent_home/screens/property_page.dart';
 import 'package:rent_home/widgets/search_area_button.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -74,9 +75,13 @@ class _MapScreenState extends State<MapScreen> {
 
   void setHotelCoordinates() {
     final Random random = Random();
-
     // Helper function to generate a small random offset
     double _generateOffset() {
+      print((random.nextDouble() - 0.5) * 0.005);
+      print(
+          "latitude: ${currentPosition!.latitude + (random.nextDouble() - 0.5) * 0.005}"
+          "  longitude: ${currentPosition!.longitude + (random.nextDouble() - 0.5) * 0.005}");
+      print("\n");
       return (random.nextDouble() - 0.5) * 0.005;
     }
 
@@ -114,7 +119,7 @@ class _MapScreenState extends State<MapScreen> {
         ],
       },
       {
-        "name": "Mountain View Inn",
+        "name": "Mountain View ",
         "price": "₹2200",
         "lat": (currentPosition?.latitude ?? 37.42496133580664) +
             _generateOffset(),
@@ -163,6 +168,102 @@ class _MapScreenState extends State<MapScreen> {
       },
       {
         "name": "Eco Lodge",
+        "price": "₹2100",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "Sustainable lodge surrounded by nature, offering eco-friendly accommodations.",
+        "rating": "4",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
+      },
+      {
+        "name": "The Grand Palace Hotel",
+        "price": "₹3000",
+        "lat": (currentPosition?.latitude ?? 37.42796133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.085749655962) +
+            _generateOffset(),
+        "description":
+            "A luxurious hotel featuring spacious rooms and breathtaking views of the city skyline.",
+        "rating": "5",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
+      },
+      {
+        "name": "Ocean Breeze Resort inn",
+        "price": "₹4500",
+        "lat": (currentPosition?.latitude ?? 37.43096133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.088749655962) +
+            _generateOffset(),
+        "description":
+            "An oceanfront resort with private beach access and premium spa services for ultimate relaxation.",
+        "rating": "4",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
+      },
+      {
+        "name": "Mountain View Inn",
+        "price": "₹2200",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "A quaint inn nestled in the mountains, perfect for hikers and nature lovers.",
+        "rating": "3",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
+      },
+      {
+        "name": "City Center Suites inn",
+        "price": "₹3800",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "Modern suites located in the heart of the city, close to major attractions.",
+        "rating": "4",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
+      },
+      {
+        "name": "Cottage Retreat inn",
+        "price": "₹2900",
+        "lat": (currentPosition?.latitude ?? 37.42496133580664) +
+            _generateOffset(),
+        "lng": (currentPosition?.longitude ?? -122.084749655962) +
+            _generateOffset(),
+        "description":
+            "Charming cottage with a rustic feel, ideal for a quiet getaway.",
+        "rating": "3",
+        "imageUrls": [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=1200&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/17/09/c9/caption.jpg?w=700&h=-1&s=1",
+          "https://media-cdn.tripadvisor.com/media/photo-s/10/da/a5/12/deluxe-room.jpg",
+        ],
+      },
+      {
+        "name": "Eco Lodge inn",
         "price": "₹2100",
         "lat": (currentPosition?.latitude ?? 37.42496133580664) +
             _generateOffset(),
@@ -260,34 +361,43 @@ class _MapScreenState extends State<MapScreen> {
               // Align all contents to the left
               children: [
                 // Carousel Slider for Images
-                Container(
-                  // height: 200, // Adjust the height as necessary
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 170.0,
-                      enlargeCenterPage: false,
-                      enableInfiniteScroll: true,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(seconds: 5),
-                    ),
-                    items: imageUrls.map((url) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: CachedNetworkImage(
-                            imageUrl: url,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            placeholder: (context, url) =>
-                                _buildShimmerEffect(),
-                            // Placeholder while loading
-                            errorWidget: (context, url, error) => Icon(Icons
-                                .error), // Error widget if the image fails to load
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PropertyPage(image: imageUrls[0])));
+                  },
+                  child: Container(
+                    // height: 200, // Adjust the height as necessary
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: 170.0,
+                        enlargeCenterPage: false,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 5),
+                      ),
+                      items: imageUrls.map((url) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: CachedNetworkImage(
+                              imageUrl: url,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              placeholder: (context, url) =>
+                                  _buildShimmerEffect(),
+                              // Placeholder while loading
+                              errorWidget: (context, url, error) => Icon(Icons
+                                  .error), // Error widget if the image fails to load
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -297,15 +407,25 @@ class _MapScreenState extends State<MapScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // Distribute space between name and rating
                   children: [
-                    Expanded(
-                      child: Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    PropertyPage(image: imageUrls[0])));
+                      },
+                      child: Expanded(
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                          textAlign:
+                              TextAlign.left, // Left-align the hotel name
                         ),
-                        textAlign: TextAlign.left, // Left-align the hotel name
                       ),
                     ),
                     // Show star and numeric rating
@@ -328,22 +448,40 @@ class _MapScreenState extends State<MapScreen> {
                 const SizedBox(height: 10),
 
                 // Hotel Price
-                Text(
-                  "Price: $price",
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.left, // Left-align the price
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PropertyPage(image: imageUrls[0])));
+                  },
+                  child: Text(
+                    "Price: $price",
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.left, // Left-align the price
+                  ),
                 ),
                 const SizedBox(height: 10),
 
                 // Hotel Description
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PropertyPage(image: imageUrls[0])));
+                  },
+                  child: Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                    textAlign: TextAlign.left, // Left-align the description
                   ),
-                  textAlign: TextAlign.left, // Left-align the description
                 ),
                 const SizedBox(height: 20),
 
@@ -375,24 +513,26 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Container(
-                        height: 50,
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey.withOpacity(0.4)),
-                        child: const Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            // Align icons and text to the left
-                            children: [
-                              Icon(
-                                Icons.calendar_month_outlined,
-                                size: 15,
-                              ),
-                              SizedBox(width: 5),
-                              Text("Oct 12 - 13")
-                            ],
+                      child: InkWell(
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey.withOpacity(0.4)),
+                          child: const Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // Align icons and text to the left
+                              children: [
+                                Icon(
+                                  Icons.calendar_month_outlined,
+                                  size: 15,
+                                ),
+                                SizedBox(width: 5),
+                                Text("Oct 12 - 13")
+                              ],
+                            ),
                           ),
                         ),
                       ),

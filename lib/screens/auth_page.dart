@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/home.dart';
 import 'package:rent_home/screens/homescreen.dart';
+import 'package:rent_home/widgets/option_button.dart';
 
 import '../widgets/bottom_nav.dart';
 
@@ -204,7 +205,9 @@ class _AuthPageState extends State<AuthPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 16),
+                    isLogin ? SizedBox.shrink() : OptionButton(),
+                    isLogin ? SizedBox.shrink() : const SizedBox(height: 30),
 
                     // Sign Up or Login Button (styled like Get Started)
                     SizedBox(
@@ -226,7 +229,7 @@ class _AuthPageState extends State<AuthPage> {
                           shape: const StadiumBorder(),
                         ),
                         child: Text(
-                          isLogin ? "Login" : "Sign Up",
+                          isLogin ? "Login" : "Next",
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: theme.colorScheme.onPrimary,
                             fontWeight: FontWeight.w500,
