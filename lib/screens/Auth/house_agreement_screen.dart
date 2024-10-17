@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:rent_home/screens/emergency_number_screen.dart';
-import 'package:rent_home/screens/referral_code_screen.dart';
+import 'package:rent_home/screens/Auth/emergency_number_screen.dart';
+import 'package:rent_home/screens/Auth/referral_code_screen.dart';
 
 class HouseAgreementScreen extends StatefulWidget {
   const HouseAgreementScreen({super.key});

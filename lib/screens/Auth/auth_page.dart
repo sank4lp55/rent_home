@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rent_home/screens/basic_info_screen.dart';
+import 'package:rent_home/screens/Auth/basic_info_screen.dart';
 import 'package:rent_home/widgets/option_button.dart';
 
-import '../widgets/bottom_nav.dart';
+import '../../widgets/bottom_nav.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -13,11 +13,29 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   bool isLogin = true;
+  bool isLoading = false; // To manage loading state
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+
+  void _handleLogin() {
+    setState(() {
+      isLoading = true; // Set loading state to true
+    });
+
+    // Simulate a network call with a delay
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        isLoading = false; // Reset loading state after delay
+      });
+
+      // Navigate to BottomNav after delay
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => BottomNav()));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -215,11 +233,19 @@ class _AuthPageState extends State<AuthPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             // Handle login or signup logic
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        InfoScreen()));
+                            if (isLogin) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          BottomNav()));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          InfoScreen()));
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'dart:io';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rent_home/screens/emergency_number_screen.dart';
+import 'package:rent_home/screens/Auth/emergency_number_screen.dart';
 
 class GovernmentIdScreen extends StatefulWidget {
   const GovernmentIdScreen({super.key});
@@ -14,6 +12,7 @@ class GovernmentIdScreen extends StatefulWidget {
 
 class _GovernmentIdScreenState extends State<GovernmentIdScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController idNumberController = TextEditingController();
   XFile? _idImage;
 
   Future<void> _pickIdImage() async {
@@ -79,7 +78,7 @@ class _GovernmentIdScreenState extends State<GovernmentIdScreen> {
                       child: Text(
                         "Upload Government ID",
                         style:
-                            TextStyle(color: theme.primaryColor, fontSize: 25),
+                        TextStyle(color: theme.primaryColor, fontSize: 25),
                       ),
                     ),
                   ],
@@ -124,11 +123,11 @@ class _GovernmentIdScreenState extends State<GovernmentIdScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Additional Informat
-                // ion Field
+                // Government ID Number Field with validation
                 TextFormField(
+                  controller: idNumberController,
                   decoration: InputDecoration(
-                    hintText: "Government Id Number",
+                    hintText: "Government ID Number",
                     filled: true,
                     fillColor: Colors.grey[100],
                     contentPadding: const EdgeInsets.symmetric(
@@ -138,6 +137,12 @@ class _GovernmentIdScreenState extends State<GovernmentIdScreen> {
                       borderSide: BorderSide.none,
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your government ID number';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 32),
 
@@ -146,24 +151,26 @@ class _GovernmentIdScreenState extends State<GovernmentIdScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_idImage != null) {
-                        // Handle upload logic here
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content:
-                                  Text('Government ID uploaded successfully!')),
-                        );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    EmergencyNumberScreen()));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content:
-                                  Text('Please select a government ID image.')),
-                        );
+                      if (_formKey.currentState!.validate()) {
+                        if (_idImage != null) {
+                          // Handle upload logic here
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    'Government ID uploaded successfully!')),
+                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EmergencyNumberScreen()));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    'Please select a government ID image.')),
+                          );
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

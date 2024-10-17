@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rent_home/screens/house_agreement_screen.dart';
-import 'package:rent_home/screens/referral_code_screen.dart';
+import 'create_account_loading_screen.dart';
 
-class EmergencyNumberScreen extends StatefulWidget {
-  const EmergencyNumberScreen({super.key});
+class ReferralCodeScreen extends StatefulWidget {
+  const ReferralCodeScreen({super.key});
 
   @override
-  _EmergencyNumberScreenState createState() => _EmergencyNumberScreenState();
+  _ReferralCodeScreenState createState() => _ReferralCodeScreenState();
 }
 
-class _EmergencyNumberScreenState extends State<EmergencyNumberScreen> {
+class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emergencyNumberController = TextEditingController();
+  final TextEditingController referralCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,7 @@ class _EmergencyNumberScreenState extends State<EmergencyNumberScreen> {
                           width: (w - 48) / 5 - 10,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: index <= 2 ? theme.primaryColor : Colors.grey[350],
+                            color: index <= 5 ? theme.primaryColor : Colors.grey[350],
                           ),
                         );
                       }),
@@ -61,18 +60,23 @@ class _EmergencyNumberScreenState extends State<EmergencyNumberScreen> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      "Emergency Number",
+                      "Referral Code",
                       style: TextStyle(color: theme.primaryColor, fontSize: 25),
+                    ),
+                    Expanded(child: Container()),
+                    Text(
+                      "Skip",
+                      style: TextStyle(color: Colors.grey, fontSize: 20),
                     ),
                   ],
                 ),
                 SizedBox(height: 50),
 
-                // Emergency Number Field
+                // Referral Code Field
                 TextFormField(
-                  controller: emergencyNumberController,
+                  controller: referralCodeController,
                   decoration: InputDecoration(
-                    hintText: "Enter Emergency Number",
+                    hintText: "Enter Referral Code",
                     filled: true,
                     fillColor: Colors.grey[100],
                     contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
@@ -81,34 +85,30 @@ class _EmergencyNumberScreenState extends State<EmergencyNumberScreen> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  keyboardType: TextInputType.phone, // Set keyboard type to phone
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter an emergency number';
-                    }
-                    if (value.length < 10) {
-                      return 'Emergency number must be at least 10 digits';
+                      return 'Please enter a referral code';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 32),
 
-                // Save Button
+                // Submit Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Handle save logic here
+                        // Handle referral code submission logic here
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Emergency number saved successfully!')),
+                          SnackBar(content: Text('Referral code submitted successfully!')),
                         );
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    HouseAgreementScreen()));
+                                    CreateAccountLoadingScreen()));
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -117,7 +117,7 @@ class _EmergencyNumberScreenState extends State<EmergencyNumberScreen> {
                       shape: const StadiumBorder(),
                     ),
                     child: Text(
-                      "Save",
+                      "Submit",
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: theme.colorScheme.onPrimary,
                         fontWeight: FontWeight.w500,

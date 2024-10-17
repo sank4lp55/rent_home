@@ -44,7 +44,7 @@ class _SearchButtonState extends State<SearchButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Search this area",
+                  "Find my home",
                   style: TextStyle(fontSize: 15),
                 ),
 

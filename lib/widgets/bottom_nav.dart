@@ -1,143 +1,80 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rent_home/screens/homescreen.dart';
-import 'package:rent_home/screens/profile_screen.dart';
+import 'package:flutter/widgets.dart';
+import 'package:rent_home/screens/Home/homescreen.dart';
 
 class BottomNav extends StatefulWidget {
-  const BottomNav({Key? key}) : super(key: key);
+  const BottomNav({super.key});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
-  final PageController pageController = PageController(initialPage: 0);
-  bool isHomeActive = true;
-  bool isMessageActive = false;
-  bool isBookmarkActive = false;
-  bool isProfileActive = false;
-  late ValueNotifier<int> _selectedIndex =  ValueNotifier(0);
+  int _selectedIndex = 0;
 
-  final pages = [
-    Homescreen(),
-    ProfileScreen(),
-    Homescreen(),
-    ProfileScreen(),
+  static final List<Widget> _screens = [
+   Homescreen(),
+    const Placeholder(),
+    const Placeholder(),
+    const Placeholder(),
+    const Placeholder(),
   ];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Scaffold(
-        // extendBody: true,
-        body: ValueListenableBuilder(
-          valueListenable: _selectedIndex,
-          builder: (BuildContext context, int value, _) {
-            return pages[value];
-          },
-        ),
-      ),
-      Positioned(
-        bottom: 30,
-        left: 30,
-        right: 30,
-        child: _bottomNavBar(context),
-      ),
-    ]);
-  }
-
-  Widget _bottomNavBar(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Center(
-      // Center the container horizontally
-      child: Container(
-        width: screenWidth - 30, // Set the width to screen width - 30
-        height: 75,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(40),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            )
-          ],
-        ),
+    return Scaffold(
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white70,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _navBarItem(
-              icon: Icons.home_filled,
-              label: 'Home',
-              isActive:  _selectedIndex.value==0,
-              onTap: () {
-                setState(() {
-                  _selectedIndex.value=0;
-                });
-                pageController.jumpToPage(0);
-              },
-            ),
-            _navBarItem(
-              icon: Icons.chat,
-              label: 'Chat',
-              isActive: _selectedIndex.value==1,
-              onTap: () {
-                setState(() {
-                  _selectedIndex.value=1;
-                });
-                pageController.jumpToPage(1);
-              },
-            ),
-            _navBarItem(
-              icon: Icons.bookmark_outline,
-              label: 'Bookmark',
-              isActive: _selectedIndex.value==2,
-              onTap: () {
-                setState(() {
-                  _selectedIndex.value=2;
-                });
-                pageController.jumpToPage(2);
-              },
-            ),
-            _navBarItem(
-              icon: Icons.person_outline,
-              label: 'Profile',
-              isActive: _selectedIndex.value==3,
-              onTap: () {
-                setState(() {
-                  _selectedIndex.value=3;
-                });
-                pageController.jumpToPage(3);
-              },
-            ),
+            buildNavBarItem(Icons.home, 'Home', 0),
+            buildNavBarItem(Icons.message, 'My Task', 1),
+            const SizedBox(width: 20),
+            buildNavBarItem(Icons.bookmark, 'Message', 3),
+            buildNavBarItem(Icons.person, 'Profile', 4),
           ],
         ),
       ),
+      floatingActionButton:  ClipOval(
+        child: Material(
+          color: Theme.of(context).primaryColor,
+          elevation: 10,
+          child: InkWell(
+            child: SizedBox(
+              width: 56,
+              height: 56,
+              child: Icon(
+                Icons.search,
+                size: 28,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  Widget _navBarItem(
-      {IconData? icon,
-      String? label,
-      required bool isActive,
-      VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundColor:
-                isActive ? Theme.of(context).primaryColor : Colors.grey,
-            child: Icon(
-              icon,
-              color: isActive ? Colors.white : Colors.white70,
-            ),
+  Widget buildNavBarItem(IconData icon, String label, int index) {
+    return InkWell(
+      onTap: () => _onItemTapped(index),
+      child:
+          Icon(
+            icon,
+            color: _selectedIndex == index
+                ? Theme.of(context).primaryColor
+                : Colors.grey,
           ),
-        ],
-      ),
+
     );
   }
 }
