@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/Home/map_screen.dart';
+import 'package:rent_home/screens/notification_screen.dart';
 import 'package:rent_home/widgets/custom_drawer.dart';
 import 'package:rent_home/widgets/slanted_container.dart';
 import 'package:rent_home/widgets/story_item.dart';
@@ -174,18 +176,23 @@ class _HomescreenState extends State<Homescreen> {
                     // ),
                     Expanded(child: Container()),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: theme.primaryColor,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Center(
-                            child: Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                        )),
+                      padding:  EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context)=>NotificationsScreen()));
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: theme.primaryColor,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Center(
+                              child: Icon(
+                            Icons.notifications,
+                            color: Colors.white,
+                          )),
+                        ),
                       ),
                     ),
                   ],
