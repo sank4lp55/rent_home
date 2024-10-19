@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rent_home/screens/Home/homescreen.dart';
 
 import '../../widgets/bottom_nav.dart';
 
@@ -36,7 +37,7 @@ class _CreateAccountLoadingScreenState extends State<CreateAccountLoadingScreen>
         // Navigate to BottomNav when the last message is shown
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BottomNav()),
+          MaterialPageRoute(builder: (context) => Homescreen()),
         );
       } else {
         _startMessageRotation();

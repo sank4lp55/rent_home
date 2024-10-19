@@ -1,7 +1,10 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/Home/map_screen.dart';
+import 'package:rent_home/widgets/custom_drawer.dart';
 import 'package:rent_home/widgets/slanted_container.dart';
+import 'package:rent_home/widgets/story_item.dart';
 
 import '../../widgets/search_area_button.dart';
 
@@ -99,20 +102,7 @@ class _HomescreenState extends State<Homescreen> {
                         scrollDirection: Axis.horizontal,
                         itemCount: 5, // Number of mock containers
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            width: 120,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.grey[300],
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Item ${index + 1}',
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          );
+                          return StoryItem(index: index);
                         },
                       ),
                     ),
@@ -129,10 +119,14 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      key: _scaffoldKey, // Assign the scaffold key here
+      drawer: CustomDrawer(),
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -151,21 +145,33 @@ class _HomescreenState extends State<Homescreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: theme.primaryColor,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Center(
-                            child: Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        )),
+                      child: InkWell(
+                        onTap: (){
+                          _scaffoldKey.currentState?.openDrawer(); // Open the drawer on icon press
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: theme.primaryColor,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Center(
+                              child: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          )),
+                        ),
                       ),
                     ),
                     Expanded(child: Container()),
-                    SlantedContainer(),
+                    SlantedContainerWithFilterIcon(),
+                    // Column(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     SizedBox(height: 20,),
+                    //     Container(child: Icon(Icons.filter_list_outlined),),
+                    //   ],
+                    // ),
                     Expanded(child: Container()),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -192,17 +198,34 @@ class _HomescreenState extends State<Homescreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
-                            decoration:
-                                BoxDecoration(color: theme.primaryColor,borderRadius: BorderRadius.circular(10)),
-                            
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: theme.primaryColor.withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                               child: Text(
                                 "Pre Booking",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.0,
+                                ),
                               ),
                             ),
                           ),
+
                           SizedBox(width: 20,)
                         ],
                       ),
@@ -258,17 +281,41 @@ class _HomescreenState extends State<Homescreen> {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-      child: Container(
-        height: 80,
-        width: 80,
-        decoration: BoxDecoration(
-            color: theme.primaryColor, borderRadius: BorderRadius.circular(40)),
-        child: Center(
-            child: Icon(
-          Icons.search,
-          color: Colors.white,
-          size: 35,
-        )),
+      child: GestureDetector(
+        onTap: () {
+          // Add your search functionality here
+        },
+        child: Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+            color: Colors.white, // Background color set to white or any preferred neutral color
+            borderRadius: BorderRadius.circular(40),
+            border: Border.all(
+              color: theme.primaryColor, // Primary color added as a border
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: theme.primaryColor.withOpacity(0.5),
+                blurRadius: 15,
+                spreadRadius: 3,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Center(
+            child: AnimatedOpacity(
+              opacity: 1.0,
+              duration: Duration(milliseconds: 300),
+              child: Icon(
+                Icons.search,
+                color: theme.primaryColor, // Icon color matches the primary color
+                size: 35,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

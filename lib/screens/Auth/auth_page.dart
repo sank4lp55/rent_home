@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/Auth/basic_info_screen.dart';
+import 'package:rent_home/screens/Home/homescreen.dart';
 import 'package:rent_home/widgets/option_button.dart';
 
 import '../../widgets/bottom_nav.dart';
@@ -33,7 +34,7 @@ class _AuthPageState extends State<AuthPage> {
 
       // Navigate to BottomNav after delay
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => BottomNav()));
+          MaterialPageRoute(builder: (BuildContext context) => Homescreen()));
     });
   }
 
@@ -238,7 +239,7 @@ class _AuthPageState extends State<AuthPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          BottomNav()));
+                                          Homescreen()));
                             } else {
                               Navigator.push(
                                   context,
