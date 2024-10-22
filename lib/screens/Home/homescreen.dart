@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/Home/map_screen.dart';
@@ -18,21 +17,18 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  int _selectedRoleIndex = 0;
+  int _selectedRoleIndex = -1; // Track selected bubble index
 
   // Function to show the collapsible bottom sheet
   void _showBottomSheet() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      // Allows the height to adapt to its content
       backgroundColor: Colors.transparent,
-      // Transparent background for glassmorphism effect
       builder: (BuildContext context) {
         return Container(
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
-            // Semi-transparent for glassmorphism
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(25.0),
             ),
@@ -43,14 +39,13 @@ class _HomescreenState extends State<Homescreen> {
           ),
           child: ClipRRect(
             borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(25.0)),
+            const BorderRadius.vertical(top: Radius.circular(25.0)),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  // Makes the sheet wrap its content
                   children: [
                     Container(
                       height: 6,
@@ -61,56 +56,24 @@ class _HomescreenState extends State<Homescreen> {
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
-
-                    // Title or Heading of the bottom sheet
                     Text(
                       "Share Memorable Stories",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
-
                     const SizedBox(height: 15),
-
-                    // // Horizontal image scrolling with increased height and reduced width
-                    // SizedBox(
-                    //   height: 10, // Increased height of the image scroll area
-                    //   child: ListView.builder(
-                    //     scrollDirection: Axis.horizontal,
-                    //     itemCount: 10, // Number of images
-                    //     itemBuilder: (BuildContext context, int index) {
-                    //       return Container(
-                    //         margin: const EdgeInsets.symmetric(horizontal: 8),
-                    //         width: 100, // Reduced width
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(12),
-                    //           image: DecorationImage(
-                    //             image: NetworkImage(
-                    //               'https://source.unsplash.com/random?house,$index',
-                    //             ),
-                    //             fit: BoxFit.cover,
-                    //           ),
-                    //         ),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
-
                     const SizedBox(height: 10),
-
-                    // Mock containers in horizontal scroll
                     SizedBox(
-                      height: 150, // Height of the containers scroll area
+                      height: 150,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5, // Number of mock containers
+                        itemCount: 5,
                         itemBuilder: (BuildContext context, int index) {
                           return StoryItem(index: index);
                         },
                       ),
                     ),
-
                     const SizedBox(height: 20),
-                    // Spacing to the bottom of the sheet
                   ],
                 ),
               ),
@@ -127,17 +90,13 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      key: _scaffoldKey, // Assign the scaffold key here
+      key: _scaffoldKey,
       drawer: CustomDrawer(),
       body: SafeArea(
         bottom: false,
         child: Stack(
           children: [
             const Expanded(child: MapScreen()),
-            // Map or other content in the background
-
-            // Small upward arrow button at the bottom-right corner
-
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -148,8 +107,8 @@ class _HomescreenState extends State<Homescreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        onTap: (){
-                          _scaffoldKey.currentState?.openDrawer(); // Open the drawer on icon press
+                        onTap: () {
+                          _scaffoldKey.currentState?.openDrawer();
                         },
                         child: Container(
                           height: 40,
@@ -159,27 +118,26 @@ class _HomescreenState extends State<Homescreen> {
                               borderRadius: BorderRadius.circular(20)),
                           child: Center(
                               child: Icon(
-                            Icons.menu,
-                            color: Colors.white,
-                          )),
+                                Icons.menu,
+                                color: Colors.white,
+                              )),
                         ),
                       ),
                     ),
                     Expanded(child: Container()),
                     SlantedContainerWithFilterIcon(),
-                    // Column(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [
-                    //     SizedBox(height: 20,),
-                    //     Container(child: Icon(Icons.filter_list_outlined),),
-                    //   ],
-                    // ),
                     Expanded(child: Container()),
                     Padding(
-                      padding:  EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: InkWell(
-                        onTap: (){
-                          Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context)=>NotificationsScreen()));
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (BuildContext context) =>
+                                  NotificationsScreen(),
+                            ),
+                          );
                         },
                         child: Container(
                           height: 40,
@@ -189,9 +147,9 @@ class _HomescreenState extends State<Homescreen> {
                               borderRadius: BorderRadius.circular(20)),
                           child: Center(
                               child: Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                          )),
+                                Icons.notifications,
+                                color: Colors.white,
+                              )),
                         ),
                       ),
                     ),
@@ -207,7 +165,10 @@ class _HomescreenState extends State<Homescreen> {
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
+                                colors: [
+                                  theme.primaryColor,
+                                  theme.primaryColor.withOpacity(0.7)
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
@@ -221,7 +182,8 @@ class _HomescreenState extends State<Homescreen> {
                               ],
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 15),
                               child: Text(
                                 "Pre Booking",
                                 style: TextStyle(
@@ -232,19 +194,53 @@ class _HomescreenState extends State<Homescreen> {
                               ),
                             ),
                           ),
-
-                          SizedBox(width: 20,)
+                          SizedBox(width: 20)
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          _hotelTypeBubble(Icons.people),
-                          _hotelTypeBubble(Icons.person),
-                          _hotelSearchBubble(),
-                          _hotelTypeBubble(Icons.heart_broken),
-                          _hotelTypeBubble(Icons.celebration),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedRoleIndex = 0; // Update selected index
+                              });
+                            },
+                            child: _hotelTypeBubble(Icons.people, _selectedRoleIndex == 0),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedRoleIndex = 1; // Update selected index
+                              });
+                            },
+                            child: _hotelTypeBubble(Icons.person, _selectedRoleIndex == 1),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedRoleIndex = 2; // Update selected index
+                              });
+                            },
+                            child: _hotelSearchBubble(_selectedRoleIndex == 2),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedRoleIndex = 3; // Update selected index
+                              });
+                            },
+                            child: _hotelTypeBubble(Icons.heart_broken, _selectedRoleIndex == 3),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedRoleIndex = 4; // Update selected index
+                              });
+                            },
+                            child: _hotelTypeBubble(Icons.celebration, _selectedRoleIndex == 4),
+                          ),
                         ],
                       ),
                       Row(
@@ -258,15 +254,16 @@ class _HomescreenState extends State<Homescreen> {
             ),
             Positioned(
               bottom: 0,
-                right: 10,
-                child: _storySheetArrowButton())
+              right: 10,
+              child: _storySheetArrowButton(),
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _hotelTypeBubble(IconData icon) {
+  Widget _hotelTypeBubble(IconData icon, bool isSelected) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -274,17 +271,23 @@ class _HomescreenState extends State<Homescreen> {
         height: 50,
         width: 50,
         decoration: BoxDecoration(
-            color: theme.primaryColor, borderRadius: BorderRadius.circular(25)),
+          color: isSelected ? theme.primaryColor : Colors.white, // Change color based on selection
+          borderRadius: BorderRadius.circular(40),
+          border: Border.all(
+            color: theme.primaryColor,
+            width: 2,
+          ),
+        ),
         child: Center(
             child: Icon(
-          icon,
-          color: Colors.white,
-        )),
+              icon,
+              color: isSelected ? Colors.white : theme.primaryColor, // Change icon color based on selection
+            )),
       ),
     );
   }
 
-  Widget _hotelSearchBubble() {
+  Widget _hotelSearchBubble(bool isSelected) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -296,10 +299,10 @@ class _HomescreenState extends State<Homescreen> {
           height: 80,
           width: 80,
           decoration: BoxDecoration(
-            color: Colors.white, // Background color set to white or any preferred neutral color
+            color: isSelected ? theme.primaryColor : Colors.white,
             borderRadius: BorderRadius.circular(40),
             border: Border.all(
-              color: theme.primaryColor, // Primary color added as a border
+              color: theme.primaryColor,
               width: 2,
             ),
             boxShadow: [
@@ -317,7 +320,7 @@ class _HomescreenState extends State<Homescreen> {
               duration: Duration(milliseconds: 300),
               child: Icon(
                 Icons.search,
-                color: theme.primaryColor, // Icon color matches the primary color
+                color: isSelected ? Colors.white : theme.primaryColor,
                 size: 35,
               ),
             ),
@@ -328,29 +331,22 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Widget _storySheetArrowButton() {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 10, 10),
-      child: GestureDetector(
-        onTap: _showBottomSheet,
-        // Show bottom sheet when arrow is tapped
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: theme.primaryColor.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 1.5,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 3), // changes position of shadow
           ),
-          child: const Icon(
-            Icons.keyboard_arrow_up,
-            color: Colors.white,
-            size: 30,
-          ),
-        ),
+        ],
+      ),
+      child: IconButton(
+        onPressed: _showBottomSheet,
+        icon: const Icon(Icons.keyboard_arrow_up),
       ),
     );
   }
