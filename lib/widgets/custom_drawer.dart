@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Host Name", // Host name
+                      "Sankalp S.", // Host name
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,

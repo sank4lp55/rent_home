@@ -230,7 +230,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         );
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
+                          MaterialPageRoute(
                               builder: (BuildContext context) =>
                               const GovernmentIdScreen()),
                         );

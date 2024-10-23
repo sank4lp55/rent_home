@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-typedef FilterCallback = void Function(int selectedHotelType, RangeValues selectedPriceRange, List<bool> selectedAmenities);
+typedef FilterCallback = void Function(int selectedHotelType, RangeValues selectedPriceRange, List<bool> selectedAmenities, double selectedDistance);
 
 Future<void> showFilterDialog({
   required BuildContext context,
   required FilterCallback onApply,
 }) {
   int selectedHotelType = -1; // Default: no selection
-  RangeValues selectedPriceRange = const RangeValues(100, 500);
+  RangeValues selectedPriceRange = const RangeValues(500, 10000); // Updated max price to 1000
   List<String> amenities = ["Wi-Fi", "Parking", "Swimming Pool", "Gym"];
   List<bool> selectedAmenities = [false, false, false, false]; // Default: all false
+  double selectedDistance = 10.0; // Default distance value
+  List<String> hotelTypes = ["Sharing", "Single", "Couple", "Party"]; // Updated hotel types
 
   // Get the theme's primary color
   final theme = Theme.of(context);
@@ -21,7 +23,7 @@ Future<void> showFilterDialog({
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            // backgroundColor: theme.primaryColor.withOpacity(0.05), // Use primary color as background with opacity
+            backgroundColor: Colors.white,
             title: Text(
               "Filter Options",
               style: TextStyle(
@@ -41,12 +43,12 @@ Future<void> showFilterDialog({
                     ),
                     const SizedBox(height: 8),
                     Wrap(
-                      spacing: 8.0, // Reduced spacing between chips
+                      spacing: 8.0,
                       children: List<Widget>.generate(
-                        3, // Assume 3 hotel types for this example
+                        hotelTypes.length,
                             (int index) {
                           return ChoiceChip(
-                            label: Text('Type $index'),
+                            label: Text(hotelTypes[index]),
                             selected: selectedHotelType == index,
                             selectedColor: theme.primaryColor.withOpacity(0.3),
                             onSelected: (bool selected) {
@@ -65,12 +67,12 @@ Future<void> showFilterDialog({
                     ),
                     RangeSlider(
                       values: selectedPriceRange,
-                      min: 50,
-                      max: 1000,
+                      min: 500,
+                      max: 10000, // Updated max price to 1000
                       divisions: 10,
                       labels: RangeLabels(
-                        '\$${selectedPriceRange.start.round()}',
-                        '\$${selectedPriceRange.end.round()}',
+                        '₹${selectedPriceRange.start.round()}',
+                        '₹${selectedPriceRange.end.round()}',
                       ),
                       activeColor: theme.primaryColor,
                       onChanged: (RangeValues values) {
@@ -90,7 +92,7 @@ Future<void> showFilterDialog({
                             (int index) {
                           return CheckboxListTile(
                             activeColor: theme.primaryColor,
-                            contentPadding: EdgeInsets.zero, // Remove padding
+                            contentPadding: EdgeInsets.zero,
                             title: Text(amenities[index]),
                             value: selectedAmenities[index],
                             onChanged: (bool? value) {
@@ -101,6 +103,24 @@ Future<void> showFilterDialog({
                           );
                         },
                       ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Distance (km)",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: theme.primaryColor),
+                    ),
+                    Slider(
+                      value: selectedDistance,
+                      min: 0,
+                      max: 50,
+                      divisions: 10,
+                      label: '${selectedDistance.round()} km',
+                      activeColor: theme.primaryColor,
+                      onChanged: (double value) {
+                        setState(() {
+                          selectedDistance = value;
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -113,18 +133,19 @@ Future<void> showFilterDialog({
                   setState(() {
                     // Reset all filter selections
                     selectedHotelType = -1;
-                    selectedPriceRange = const RangeValues(100, 500);
+                    selectedPriceRange = const RangeValues(500, 10000); // Reset price range to 100 - 1000
                     selectedAmenities = [false, false, false, false];
+                    selectedDistance = 10.0;
                   });
                 },
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.primaryColor, // Set primary color for apply button
+                  backgroundColor: theme.primaryColor,
                 ),
-                child: const Text("Apply Filters"),
+                child: const Text("Apply Filters",style: TextStyle(color: Colors.white),),
                 onPressed: () {
-                  onApply(selectedHotelType, selectedPriceRange, selectedAmenities);
+                  onApply(selectedHotelType, selectedPriceRange, selectedAmenities, selectedDistance);
                   Navigator.of(context).pop();
                 },
               ),
