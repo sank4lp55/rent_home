@@ -355,29 +355,23 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
-            zoomControlsEnabled: false,
-            compassEnabled: true,
-            myLocationButtonEnabled: true,
-            myLocationEnabled: true,
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            markers: markers.values.toSet(),
-            padding:
-                const EdgeInsets.only(top: 50), // Adjust this value as needed
-          ),
-          // Stack(
-          //   alignment: Alignment.center,
-          //   children: [
-          //     Positioned(bottom: 20, child: SearchButton()),
-          //   ],
-          // ),
-        ],
+      body: SizedBox(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        child: GoogleMap(
+          zoomControlsEnabled: false,
+          compassEnabled: true,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+          mapType: MapType.normal,
+          initialCameraPosition: _kGooglePlex,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          markers: markers.values.toSet(),
+          padding:
+              const EdgeInsets.only(top: 50), // Adjust this value as needed
+        ),
       ),
     );
   }

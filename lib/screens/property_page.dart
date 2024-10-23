@@ -2,9 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PropertyPage extends StatelessWidget {
-  const PropertyPage({super.key, required this.image});
-
   final String image;
+  final String name;
+  final String price;
+  final String description;
+  final String rating;
+  final List<String> galleryImages;
+
+  PropertyPage({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.price,
+    required this.description,
+    required this.rating,
+    required this.galleryImages,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +35,8 @@ class PropertyPage extends StatelessWidget {
                     imageUrl: image,
                     fit: BoxFit.cover,
                     width: double.infinity,
-                    placeholder: (context, url) =>
-                       CircularProgressIndicator(),
-                    // Placeholder while loading
-                    errorWidget: (context, url, error) => Icon(Icons
-                        .error), // Error widget if the image fails to load
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                   Positioned(
                     bottom: 20,
@@ -36,17 +46,19 @@ class PropertyPage extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
+                            color: Colors.grey.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           child: Row(
                             children: [
                               const Icon(Icons.star, size: 16, color: Colors.amber),
                               const SizedBox(width: 4),
                               Text(
-                                "4.9",
+                                rating,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -54,7 +66,9 @@ class PropertyPage extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
+                            color: Colors.grey.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           child: Row(
                             children: [
                               Text(
@@ -62,7 +76,7 @@ class PropertyPage extends StatelessWidget {
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -104,7 +118,7 @@ class PropertyPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Jumeirah Village \nTriangle Dubai",
+                        name,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -112,7 +126,7 @@ class PropertyPage extends StatelessWidget {
                       Icon(
                         Icons.bookmark,
                         color: Colors.grey[400]!,
-                      )
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -125,7 +139,7 @@ class PropertyPage extends StatelessWidget {
                       ),
                       SizedBox(width: 4),
                       Text(
-                        "Jumeirah Village Triangle Dubai",
+                        "Jumeirah Village Triangle",
                       ),
                     ],
                   ),
@@ -139,7 +153,7 @@ class PropertyPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Introducing a charming 3-bedroom, 2-bathroom single-family home nestled in a peaceful suburban neighborhood. This well-maintained residence offers an inviting open floor plan with abundant natural light throughout.',
+                    description,
                     style: theme.textTheme.bodyLarge,
                   ),
                   TextButton(
@@ -152,28 +166,68 @@ class PropertyPage extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(
-                          width: 8,
-                        ),
+                        const SizedBox(width: 8),
                         const Icon(
                           Icons.arrow_forward_rounded,
                           size: 24,
                           color: Colors.black,
-                        )
+                        ),
                       ],
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Amenities",
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildAmenities(),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Gallery",
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildImageGallery(),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Reviews",
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildReviews(),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Nearby Attractions",
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildNearbyAttractions(),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: SizedBox(
         width: 340,
         height: 70,
         child: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            _showBookingDialog(context);
+          },
           backgroundColor: Colors.black.withAlpha(200),
           foregroundColor: Colors.white,
           shape: const StadiumBorder(),
@@ -181,11 +235,11 @@ class PropertyPage extends StatelessWidget {
             children: [
               const SizedBox(width: 5),
               Text(
-                  '\$250,000/month',
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
-                  )
+                price + '.00',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(width: 12),
               Container(
@@ -194,27 +248,138 @@ class PropertyPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: Colors.grey.withOpacity(0.4)
+                  color: Colors.grey.withOpacity(0.4),
                 ),
                 child: const Row(
                   children: [
                     Icon(Icons.calendar_month_outlined),
                     SizedBox(width: 10),
-                    Text("June 23 - 27")
+                    Text("Oct 24 - 25"),
                   ],
                 ),
               ),
-             const SizedBox(width: 8),
+              const SizedBox(width: 8),
               CircleAvatar(
                 radius: 25,
-                backgroundColor: theme.primaryColor,
-                child: const Icon(Icons.arrow_forward_rounded, color: Colors.white,),
-              )
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.arrow_forward_rounded, color: Colors.white),
+              ),
             ],
           ),
-        ), 
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _buildAmenities() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text("✓ Free Wi-Fi"),
+        Text("✓ Swimming Pool"),
+        Text("✓ Gym"),
+        Text("✓ Parking"),
+        Text("✓ Pet Friendly"),
+        Text("✓ Room Service"),
+        Text("✓ 24/7 Front Desk"),
+        Text("✓ Spa and Wellness Center"),
+      ],
+    );
+  }
+
+  Widget _buildImageGallery() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: galleryImages.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CachedNetworkImage(
+                imageUrl: galleryImages[index],
+                width: 150,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildReviews() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text("⭐️⭐️⭐️⭐️⭐️ - Great stay! Will come again."),
+        Text("⭐️⭐️⭐️⭐️ - Nice place, good service."),
+        Text("⭐️⭐️⭐️ - Average experience, could improve."),
+      ],
+    );
+  }
+
+  Widget _buildNearbyAttractions() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text("✓ Jumeirah Beach - 2.5 km"),
+        Text("✓ Dubai Marina Mall - 3 km"),
+        Text("✓ Burj Al Arab - 4 km"),
+        Text("✓ Palm Jumeirah - 5 km"),
+      ],
+    );
+  }
+
+  void _showBookingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Booking Form'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  decoration: InputDecoration(labelText: 'Name'),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Phone'),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Check-in Date'),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Check-out Date'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Handle booking logic
+                Navigator.pop(context);
+              },
+              child: Text('Book Now'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

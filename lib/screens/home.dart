@@ -229,14 +229,14 @@ class _HomePageState extends State<HomePage> {
                           (index) => Padding(
                             padding: const EdgeInsets.only(top: 12.0),
                             child: PropertyCard(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const PropertyPage(image:  "assets/img1.jpg"),
-                                  ),
-                                );
-                              },
+                              // onTap: () {
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const PropertyPage(image:  "assets/img1.jpg"),
+                              //     ),
+                              //   );
+                              // },
                             ),
                           ),
                         )

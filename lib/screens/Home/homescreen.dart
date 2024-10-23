@@ -1,13 +1,14 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rent_home/screens/Home/map_screen.dart';
 import 'package:rent_home/screens/notification_screen.dart';
 import 'package:rent_home/widgets/custom_drawer.dart';
 import 'package:rent_home/widgets/slanted_container.dart';
 import 'package:rent_home/widgets/story_item.dart';
-
-import '../../widgets/search_area_button.dart';
+import '../../widgets/filter_dialog.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -16,79 +17,43 @@ class Homescreen extends StatefulWidget {
   State<Homescreen> createState() => _HomescreenState();
 }
 
-class _HomescreenState extends State<Homescreen> {
-  int _selectedRoleIndex = -1; // Track selected bubble index
+class _HomescreenState extends State<Homescreen>
+    with TickerProviderStateMixin {
+  int _selectedHotelIndex = -1;
+  late AnimationController _animationController;
+  late Timer _timer;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final DraggableScrollableController _dragController = DraggableScrollableController();
 
-  // Function to show the collapsible bottom sheet
-  void _showBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(25.0),
-            ),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 1.5,
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(25.0)),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 6,
-                      width: 60,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                    Text(
-                      "Share Memorable Stories",
-                      style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 15),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: 150,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (BuildContext context, int index) {
-                          return StoryItem(index: index);
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
     );
+
+    _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
+      _playAnimation();
+    });
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _playAnimation() {
+    _animationController.forward(from: 0);
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(),
@@ -96,13 +61,16 @@ class _HomescreenState extends State<Homescreen> {
         bottom: false,
         child: Stack(
           children: [
-            const Expanded(child: MapScreen()),
+            Positioned.fill(
+              child: const MapScreen(),
+            ),
+            // Top Bar
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -114,21 +82,23 @@ class _HomescreenState extends State<Homescreen> {
                           height: 40,
                           width: 40,
                           decoration: BoxDecoration(
-                              color: theme.primaryColor,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Center(
-                              child: Icon(
-                                Icons.menu,
-                                color: Colors.white,
-                              )),
+                            color: theme.primaryColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.menu,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                    Expanded(child: Container()),
+                    const Spacer(),
                     SlantedContainerWithFilterIcon(),
-                    Expanded(child: Container()),
+                    const Spacer(),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -143,210 +113,214 @@ class _HomescreenState extends State<Homescreen> {
                           height: 40,
                           width: 40,
                           decoration: BoxDecoration(
-                              color: theme.primaryColor,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Center(
-                              child: Icon(
-                                Icons.notifications,
-                                color: Colors.white,
-                              )),
+                            color: theme.primaryColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.notifications,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  theme.primaryColor,
-                                  theme.primaryColor.withOpacity(0.7)
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: theme.primaryColor.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 15),
-                              child: Text(
-                                "Pre Booking",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 20)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedRoleIndex = 0; // Update selected index
-                              });
-                            },
-                            child: _hotelTypeBubble(Icons.people, _selectedRoleIndex == 0),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedRoleIndex = 1; // Update selected index
-                              });
-                            },
-                            child: _hotelTypeBubble(Icons.person, _selectedRoleIndex == 1),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedRoleIndex = 2; // Update selected index
-                              });
-                            },
-                            child: _hotelSearchBubble(_selectedRoleIndex == 2),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedRoleIndex = 3; // Update selected index
-                              });
-                            },
-                            child: _hotelTypeBubble(Icons.heart_broken, _selectedRoleIndex == 3),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedRoleIndex = 4; // Update selected index
-                              });
-                            },
-                            child: _hotelTypeBubble(Icons.celebration, _selectedRoleIndex == 4),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [SearchButton()],
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
-            Positioned(
-              bottom: 0,
-              right: 10,
-              child: _storySheetArrowButton(),
-            )
+
+            // Bottom Sheet with Swipe
+            DraggableScrollableSheet(
+              controller: _dragController,
+              initialChildSize: 0.22,
+              minChildSize: 0.22,
+              maxChildSize: 0.38,
+              builder: (context, scrollController) {
+                return Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.topCenter,
+                  children: [
+                    // Main Bottom Sheet Content
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40.0),
+                          topRight: Radius.circular(40.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            offset: Offset(0, -5),
+                          ),
+                        ],
+                      ),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        physics: const ClampingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            // Drag handle
+                            Container(
+                              height: 4,
+                              width: 40,
+                              margin: const EdgeInsets.symmetric(vertical: 0),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Hotel type blocks row
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _hotelTypeBlock(0, "assets/teamwork.png", "Sharing"),
+                                      _hotelTypeBlock(1, "assets/boy.png", "Single"),
+                                      const SizedBox(width: 10),
+                                      _hotelTypeBlock(2, "assets/couple.png", "Couple"),
+                                      _hotelTypeBlock(3, "assets/girls.png", "Party"),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  // Find home button row
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: theme.primaryColor,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              "Find my home",
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      InkWell(
+                                        onTap: () {
+                                          showFilterDialog(
+                                            context: context,
+                                            onApply: (selectedHotelType, selectedPriceRange, selectedAmenities, selectedDistance) {
+                                              // Handle filters
+                                              print('Selected Hotel Type: $selectedHotelType');
+                                              print('Selected Price Range: ${selectedPriceRange.start} - ${selectedPriceRange.end}');
+                                              print('Selected Amenities: $selectedAmenities');
+                                              print('Selected Distance: $selectedDistance km');
+                                            },
+                                          );
+                                        },
+
+                                        child: Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            color: theme.primaryColor.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Center(
+                                              child: Image.asset("assets/filter.png"),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  // Image row
+                                  const SizedBox(height: 20),
+
+                                  SizedBox(
+                                    height: 120,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                                          child: StoryItem(index: index),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Lottie Animation positioned above the sheet
+                    Positioned(
+                      top: -125,
+                      child: IgnorePointer(
+                        child: SizedBox(
+                          height: 250,
+                          width: 250,
+                          child: Lottie.asset(
+                            'assets/7GTbKOIfmD.json',
+                            controller: _animationController,
+                            onLoaded: (composition) {
+                              _animationController.duration = composition.duration;
+                            },
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _hotelTypeBubble(IconData icon, bool isSelected) {
+  Widget _hotelTypeBlock(int index, String image, String type) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 50,
-        width: 50,
-        decoration: BoxDecoration(
-          color: isSelected ? theme.primaryColor : Colors.white, // Change color based on selection
-          borderRadius: BorderRadius.circular(40),
-          border: Border.all(
-            color: theme.primaryColor,
-            width: 2,
-          ),
-        ),
-        child: Center(
-            child: Icon(
-              icon,
-              color: isSelected ? Colors.white : theme.primaryColor, // Change icon color based on selection
-            )),
-      ),
-    );
-  }
-
-  Widget _hotelSearchBubble(bool isSelected) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-      child: GestureDetector(
-        onTap: () {
-          // Add your search functionality here
-        },
-        child: Container(
-          height: 80,
-          width: 80,
-          decoration: BoxDecoration(
-            color: isSelected ? theme.primaryColor : Colors.white,
-            borderRadius: BorderRadius.circular(40),
-            border: Border.all(
-              color: theme.primaryColor,
-              width: 2,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: theme.primaryColor.withOpacity(0.5),
-                blurRadius: 15,
-                spreadRadius: 3,
-                offset: Offset(0, 5),
-              ),
-            ],
-          ),
-          child: Center(
-            child: AnimatedOpacity(
-              opacity: 1.0,
-              duration: Duration(milliseconds: 300),
-              child: Icon(
-                Icons.search,
-                color: isSelected ? Colors.white : theme.primaryColor,
-                size: 35,
+    return InkWell(
+      onTap: () {
+        setState(() {
+          if (_selectedHotelIndex == index) {
+            _selectedHotelIndex = -1;
+          } else {
+            _selectedHotelIndex = index;
+          }
+        });
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: theme.primaryColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: _selectedHotelIndex == index
+                    ? theme.primaryColor
+                    : Colors.transparent,
+                width: 2,
               ),
             ),
+            child: Center(
+              child: Image.asset(image, height: 30, width: 30),
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _storySheetArrowButton() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 10,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
+          const SizedBox(height: 4),
+          Text(type),
         ],
-      ),
-      child: IconButton(
-        onPressed: _showBottomSheet,
-        icon: const Icon(Icons.keyboard_arrow_up),
       ),
     );
   }

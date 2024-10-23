@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rent_home/screens/Auth/basic_info_screen.dart';
 import 'package:rent_home/screens/Home/homescreen.dart';
-import 'package:rent_home/screens/Home/new_homescreen.dart';
 import 'package:rent_home/widgets/option_button.dart';
 
 import '../../widgets/bottom_nav.dart';
@@ -240,7 +239,7 @@ class _AuthPageState extends State<AuthPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          NewHomescreen()));
+                                          Homescreen()));
                             } else {
                               Navigator.push(
                                   context,

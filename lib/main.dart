@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.latoTextTheme(),
         primaryColor: const Color(0xffC14464),
+
       ),
       home:  OnboardingPage(),
     );

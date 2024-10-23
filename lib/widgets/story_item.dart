@@ -29,8 +29,9 @@ class _StoryItemState extends State<StoryItem> {
     return Stack(
       children: [
         Container(
+          height: 120,
           margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: 120,
+          width: 100,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: Colors.grey[300],
@@ -67,7 +68,7 @@ class _StoryItemState extends State<StoryItem> {
           ),
         ),
         Positioned(
-          top: 50,
+          top: 35,
           left: 20,
           right: 20,
           child: Center(

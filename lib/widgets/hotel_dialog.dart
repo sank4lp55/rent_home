@@ -37,8 +37,14 @@ class HotelDialog extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PropertyPage(image: imageUrls[0])));
+                        builder: (BuildContext context) => PropertyPage(
+                          image: imageUrls[0],
+                          name: name,
+                          description: description,
+                          rating: rating,
+                          price: price,
+                          galleryImages: imageUrls,
+                        )));
               },
               child: Container(
                 // height: 200, // Adjust the height as necessary
@@ -82,8 +88,14 @@ class HotelDialog extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                PropertyPage(image: imageUrls[0])));
+                            builder: (BuildContext context) => PropertyPage(
+                              image: imageUrls[0],
+                              name: name,
+                              description: description,
+                              rating: rating,
+                              price: price,
+                              galleryImages: imageUrls,
+                            )));
                   },
                   child: Expanded(
                     child: Text(
@@ -122,8 +134,14 @@ class HotelDialog extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PropertyPage(image: imageUrls[0])));
+                        builder: (BuildContext context) => PropertyPage(
+                          image: imageUrls[0],
+                          name: name,
+                          description: description,
+                          rating: rating,
+                          price: price,
+                          galleryImages: imageUrls,
+                        )));
               },
               child: Text(
                 "Price: $price",
@@ -140,8 +158,14 @@ class HotelDialog extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PropertyPage(image: imageUrls[0])));
+                        builder: (BuildContext context) => PropertyPage(
+                          image: imageUrls[0],
+                          name: name,
+                          description: description,
+                          rating: rating,
+                          price: price,
+                          galleryImages: imageUrls,
+                        )));
               },
               child: Text(
                 description,
@@ -222,6 +246,7 @@ class HotelDialog extends StatelessWidget {
       ),
     );
   }
+
   // Shimmer Effect Widget
   Widget _buildShimmerEffect() {
     return Shimmer.fromColors(
@@ -235,5 +260,4 @@ class HotelDialog extends StatelessWidget {
       ),
     );
   }
-
 }
