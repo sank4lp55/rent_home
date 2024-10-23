@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-class PropertyPage extends StatelessWidget {
+class PropertyPage extends StatefulWidget {
   final String image;
   final String name;
   final String price;
@@ -9,7 +11,7 @@ class PropertyPage extends StatelessWidget {
   final String rating;
   final List<String> galleryImages;
 
-  PropertyPage({
+  const PropertyPage({
     super.key,
     required this.image,
     required this.name,
@@ -18,6 +20,29 @@ class PropertyPage extends StatelessWidget {
     required this.rating,
     required this.galleryImages,
   });
+
+  @override
+  _PropertyPageState createState() => _PropertyPageState();
+}
+
+class _PropertyPageState extends State<PropertyPage> {
+  late Razorpay razorpay;
+
+  @override
+  void initState() {
+    super.initState();
+    razorpay = Razorpay();
+
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    razorpay.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +57,7 @@ class PropertyPage extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: image,
+                    imageUrl: widget.image,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     placeholder: (context, url) => CircularProgressIndicator(),
@@ -54,7 +79,7 @@ class PropertyPage extends StatelessWidget {
                               const Icon(Icons.star, size: 16, color: Colors.amber),
                               const SizedBox(width: 4),
                               Text(
-                                rating,
+                                widget.rating,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
                                 ),
@@ -118,7 +143,7 @@ class PropertyPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        name,
+                        widget.name,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -153,7 +178,7 @@ class PropertyPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    description,
+                    widget.description,
                     style: theme.textTheme.bodyLarge,
                   ),
                   TextButton(
@@ -226,7 +251,21 @@ class PropertyPage extends StatelessWidget {
         height: 70,
         child: FloatingActionButton.extended(
           onPressed: () {
-            _showBookingDialog(context);
+
+            int priceInPaise=int.parse(widget.price.substring(1))*100;
+            print(priceInPaise);
+            var options = {
+              'key': 'rzp_test_oFOYAkVCQ5Nzwl',
+              'amount': priceInPaise,
+              'name': widget.name,
+              'description': widget.description,
+              'prefill': {
+                'contact': '6387242986',
+                'email': 'sankalpsrivastav55@gmail.com',
+              },
+            };
+
+            razorpay.open(options);
           },
           backgroundColor: Colors.black.withAlpha(200),
           foregroundColor: Colors.white,
@@ -235,7 +274,7 @@ class PropertyPage extends StatelessWidget {
             children: [
               const SizedBox(width: 5),
               Text(
-                price + '.00',
+                widget.price + '.00',
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -293,14 +332,14 @@ class PropertyPage extends StatelessWidget {
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: galleryImages.length,
+        itemCount: widget.galleryImages.length,
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.only(right: 8),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                imageUrl: galleryImages[index],
+                imageUrl: widget.galleryImages[index],
                 width: 150,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => CircularProgressIndicator(),
@@ -316,10 +355,9 @@ class PropertyPage extends StatelessWidget {
   Widget _buildReviews() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text("⭐️⭐️⭐️⭐️⭐️ - Great stay! Will come again."),
-        Text("⭐️⭐️⭐️⭐️ - Nice place, good service."),
-        Text("⭐️⭐️⭐️ - Average experience, could improve."),
+      children: [
+        const Text("Review 1: Excellent place to stay!"),
+        const Text("Review 2: Very comfortable and great service."),
       ],
     );
   }
@@ -328,58 +366,23 @@ class PropertyPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: const [
-        Text("✓ Jumeirah Beach - 2.5 km"),
-        Text("✓ Dubai Marina Mall - 3 km"),
-        Text("✓ Burj Al Arab - 4 km"),
-        Text("✓ Palm Jumeirah - 5 km"),
+        Text("✓ Attraction 1"),
+        Text("✓ Attraction 2"),
+        Text("✓ Attraction 3"),
+        Text("✓ Attraction 4"),
       ],
     );
   }
 
-  void _showBookingDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Booking Form'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextField(
-                  decoration: InputDecoration(labelText: 'Name'),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Email'),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Phone'),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Check-in Date'),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Check-out Date'),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Handle booking logic
-                Navigator.pop(context);
-              },
-              child: Text('Book Now'),
-            ),
-          ],
-        );
-      },
-    );
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(msg: "Payment Successful: ${response.paymentId}");
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Fluttertoast.showToast(msg: "Payment Failed: ${response.message}");
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    Fluttertoast.showToast(msg: "External Wallet: ${response.walletName}");
   }
 }
